@@ -1,6 +1,6 @@
 import Appointment from '../models/Appointment';
 import { startOfHour } from 'date-fns';
-import {getCustomRepository} from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import AppointmentsRepository from '../repositories/Apointments.repository';
 
 // services awayls have only one method, and are
@@ -8,9 +8,10 @@ import AppointmentsRepository from '../repositories/Apointments.repository';
 // services don't have access to request, response
 // services holds the (business rules) from the application
 
-interface Request{
-    provider:string;
-    date:Date;
+interface Request {
+    id: string;
+    provider_id: string;
+    date: Date;
 }
 
 /**
@@ -19,7 +20,7 @@ interface Request{
 
 class CreateAppointmentService {
 
-    public async execute({provider,date}:Request):Promise<Appointment> {
+    public async execute({ id, provider_id, date }: Request): Promise<Appointment> {
 
         const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
@@ -32,7 +33,8 @@ class CreateAppointmentService {
         }
 
         const appointment = appointmentsRepository.create({
-            provider:provider,
+            id:id,
+            provider_id: provider_id,
             date: appointmentDate
         });
 

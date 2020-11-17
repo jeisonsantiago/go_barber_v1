@@ -24,7 +24,7 @@ export class CreateAppointments1605505944600 implements MigrationInterface {
                         type: 'timestamp with time zone',
                     },
                     {
-                        name: 'create_at',
+                        name: 'created_at',
                         type:'timestamp',
                         default:'now()',
                     },
@@ -40,7 +40,7 @@ export class CreateAppointments1605505944600 implements MigrationInterface {
 
     // fallback
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('appoitments');
+        await queryRunner.dropTable('appointments');
     }
 
 }

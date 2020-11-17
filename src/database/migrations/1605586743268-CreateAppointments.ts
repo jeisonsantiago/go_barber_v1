@@ -10,7 +10,7 @@ export class CreateAppointments1605586743268 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id',
-                        type: 'varchar',
+                        type: 'uuid',
                         isPrimary: true,
                         generationStrategy: 'uuid', // generate automatic id through uuid()
                         default: 'uuid_generate_v4()',
@@ -24,7 +24,7 @@ export class CreateAppointments1605586743268 implements MigrationInterface {
                         type: 'timestamp with time zone',
                     },
                     {
-                        name: 'create_at',
+                        name: 'created_at',
                         type:'timestamp',
                         default:'now()',
                     },
@@ -40,7 +40,7 @@ export class CreateAppointments1605586743268 implements MigrationInterface {
 
     // fallback
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('appoitments');
+        await queryRunner.dropTable('appointments');
     }
 
 }

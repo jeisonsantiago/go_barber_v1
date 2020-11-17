@@ -1,7 +1,13 @@
 import {Entity,Column,PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
-@Entity('users')
-class Users{
+/** Relationships
+ * One to One
+ * One to Many
+ * Many to Many
+ */
+
+@Entity('users') // table name
+class User{
 
     @PrimaryGeneratedColumn('uuid')
     id:string;
@@ -22,4 +28,4 @@ class Users{
     updated_at:Date;
 }
 
-export default Users;
+export default User;
