@@ -25,6 +25,7 @@ usersRouter.post('/', async (request, response) => {
             password,
         });
 
+        // so we show everything but password
         const userWithoutPassword = {
             id: user.id,
             name: user.name,
