@@ -2,6 +2,7 @@ import Appointment from '../models/Appointment';
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import AppointmentsRepository from '../repositories/Apointments.repository';
+import AppError from '../errors/AppErrors';
 
 // services awayls have only one method, and are
 // responsible for only one thing (unica responsabilidade)
@@ -29,7 +30,7 @@ class CreateAppointmentService {
         const isBooked = await appointmentsRepository.findByDate(appointmentDate);
 
         if (isBooked) {
-            throw Error('Appointment already booked.');
+            throw new AppError('Appointment already booked.');
         }
 
         const appointment = appointmentsRepository.create({

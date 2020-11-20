@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import uploadConfig from '../config/upload';
 import fs from 'fs';
+import AppError from '../errors/AppErrors';
 // services awayls have only one method, and are
 // responsible for only one thing (unica responsabilidade)
 // services don't have access to request, response
@@ -32,7 +33,7 @@ class UpdateUserAvatarService {
         const user = await userRepository.findOne(user_id);
 
         if(!user){
-            throw new Error('Only authenticated users can change avatar.');
+            throw new AppError('Only authenticated users can change avatar.',401);
         }
 
         if(user.image_avatar){

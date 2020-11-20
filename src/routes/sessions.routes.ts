@@ -1,5 +1,6 @@
 // ROUTES, recieve requisitions, call other file, return a response
 import { request, response, Router } from 'express';
+import AppError from '../errors/AppErrors';
 
 import AuthenticateUserService from '../services/AuthenticateUserService';
 
@@ -29,7 +30,7 @@ sessionsRouter.post('/', async (request, response) => {
         return response.json({ user: userShow, token });
     } catch (error) {
         return response
-            .status(400)
+            .status(error.statusCode)
             .json({ error: error.message });
     }
 });

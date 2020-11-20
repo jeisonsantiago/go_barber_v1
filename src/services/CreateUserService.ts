@@ -2,6 +2,8 @@ import User from '../models/User';
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
+import AppError from '../errors/AppErrors';
+
 // services awayls have only one method, and are
 // responsible for only one thing (unica responsabilidade)
 // services don't have access to request, response
@@ -34,7 +36,7 @@ class CreateUserService {
         })
 
         if (emailAlreadExists) {
-            throw Error('Email address already used.');
+            throw new AppError('Email address already used.');
         }
 
         const hashedPassword = await hash(password,8);
