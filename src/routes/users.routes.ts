@@ -58,33 +58,27 @@ usersRouter.patch(
     async (request, response) => {
         // file info
 
-        try {
+        const updateUserAvatar = new UpdateUserAvatarService();
 
-            const updateUserAvatar = new UpdateUserAvatarService();
+        const user = await updateUserAvatar.execute({
+            user_id: request.user.id,
+            avatarFilename: request.file.filename
+        })
 
-            const user = await updateUserAvatar.execute({
-                user_id: request.user.id,
-                avatarFilename: request.file.filename
-            })
+        console.log(request.file);
 
-            console.log(request.file);
+        // so we show everything but password
+        const userWithoutPassword = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+            image_avatar: user.image_avatar,
+        };
 
-            // so we show everything but password
-            const userWithoutPassword = {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                created_at: user.created_at,
-                updated_at: user.updated_at,
-                image_avatar:user.image_avatar,
-            };
+        return response.json(userWithoutPassword);
 
-            return response.json(userWithoutPassword);
-
-
-        } catch (error) {
-            return response.status(400).json({ error: error.message });
-        }
 
     })
 
