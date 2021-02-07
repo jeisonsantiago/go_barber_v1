@@ -7,8 +7,14 @@ import './database';
 import uploadConfig from './config/upload';
 import upload from "./config/upload";
 import AppError from './errors/AppErrors';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
+// app.use(cors({
+//   origin: 'http//localhost/3000'
+// })); // cors lib blocks other sites access to this API
+
 app.use(express.json());
 app.use('/files',express.static(uploadConfig.directory));
 
