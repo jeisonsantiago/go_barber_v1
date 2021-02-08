@@ -1,8 +1,8 @@
 // ROUTES, recieve requisitions, call other file, return a response
 import { request, response, Router } from 'express';
-import AppError from '../errors/AppErrors';
+import AppError from '@shared/errors/AppErrors';
 
-import AuthenticateUserService from '../services/AuthenticateUserService';
+import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 
 const sessionsRouter = Router();
 

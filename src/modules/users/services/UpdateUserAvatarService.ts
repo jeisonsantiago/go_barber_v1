@@ -1,9 +1,9 @@
-import User from '../models/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 import { getRepository } from 'typeorm';
 import path from 'path';
-import uploadConfig from '../config/upload';
+import uploadConfig from '@config/upload';
 import fs from 'fs';
-import AppError from '../errors/AppErrors';
+import AppError from '@shared/errors/AppErrors';
 // services awayls have only one method, and are
 // responsible for only one thing (unica responsabilidade)
 // services don't have access to request, response

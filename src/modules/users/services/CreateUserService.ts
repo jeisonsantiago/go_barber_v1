@@ -1,8 +1,8 @@
-import User from '../models/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
-import AppError from '../errors/AppErrors';
+import AppError from '@shared/errors/AppErrors';
 
 // services awayls have only one method, and are
 // responsible for only one thing (unica responsabilidade)
@@ -19,7 +19,7 @@ import AppError from '../errors/AppErrors';
 * cript pasword
 */
 
-interface Request {
+interface IRequest {
     name: string;
     email: string;
     password: string;
@@ -27,7 +27,7 @@ interface Request {
 
 class CreateUserService {
 
-    public async execute({ name, email, password }: Request): Promise<User> {
+    public async execute({ name, email, password }: IRequest): Promise<User> {
 
         const userRepository = getRepository(User);
 
