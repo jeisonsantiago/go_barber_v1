@@ -10,5 +10,5 @@ export default interface IUsersRepository {
 
   // create and save
   create(data: ICreateUserDTO): Promise<User | undefined>;
-  //save(user: User): Promise<User | undefined>;
+  save(user: User): Promise<User | undefined>;
 }

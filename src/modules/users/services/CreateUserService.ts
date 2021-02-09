@@ -1,8 +1,10 @@
 import User from '@modules/users/infra/typeorm/entities/User';
-import { getRepository } from 'typeorm';
-import { hash } from 'bcryptjs';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 import AppError from '@shared/errors/AppErrors';
+import IUsersRepository from '../repositories/IUsersRepository';
+
+import { injectable,inject } from 'tsyringe';
 
 // services awayls have only one method, and are
 // responsible for only one thing (unica responsabilidade)
@@ -20,37 +22,41 @@ import AppError from '@shared/errors/AppErrors';
 */
 
 interface IRequest {
-    name: string;
-    email: string;
-    password: string;
+  name: string;
+  email: string;
+  password: string;
 }
 
+@injectable()
 class CreateUserService {
 
-    public async execute({ name, email, password }: IRequest): Promise<User> {
 
-        const userRepository = getRepository(User);
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
 
-        const emailAlreadExists = await userRepository.findOne({
-            where: { email },
-        })
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
+    ) { }
 
-        if (emailAlreadExists) {
-            throw new AppError('Email address already used.');
-        }
+  public async execute({ name, email, password }: IRequest): Promise<User | undefined> {
 
-        const hashedPassword = await hash(password,8);
+    const emailAlreadExists = await this.usersRepository.findByEmail(email);
 
-        const user = userRepository.create({
-            name,
-            email,
-            password:hashedPassword,
-        });
-
-        await userRepository.save(user);
-
-        return user;
+    if (emailAlreadExists) {
+      throw new AppError('Email address already used.');
     }
+
+    const hashedPassword = await this.hashProvider.generateHash(password);
+
+    const user = await this.usersRepository.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    return user;
+  }
 }
 
 export default CreateUserService;

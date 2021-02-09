@@ -33,7 +33,7 @@ export default function ensureAuthenticated(
         }
 
 
-        console.log(decoded);
+        //console.log(decoded);
         return next();
     } catch (error) {
         throw new AppError('Invalid JWT token',401);

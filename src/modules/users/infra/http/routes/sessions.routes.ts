@@ -1,34 +1,15 @@
 // ROUTES, recieve requisitions, call other file, return a response
-import { request, response, Router } from 'express';
-import AppError from '@shared/errors/AppErrors';
+// import { request, response, Router } from 'express';
+import { Router } from 'express';
+//import AppError from '@shared/errors/AppErrors';
 
-import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
+import SessionsController from '../controllers/SessionsController';
 
 const sessionsRouter = Router();
 
-sessionsRouter.post('/', async (request, response) => {
+const sessionController = new SessionsController();
 
-
-
-    const { email, password } = request.body;
-
-    const authenticateUser = new AuthenticateUserService();
-
-    const { user, token } = await authenticateUser.execute({
-        email,
-        password,
-    });
-
-    const userShow = {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        created_at: user.created_at,
-        updated_at: user.updated_at,
-    }
-
-    return response.json({ user: userShow, token });
-});
+sessionsRouter.post('/',sessionController.create);
 
 export default sessionsRouter;
 
