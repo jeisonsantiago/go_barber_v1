@@ -3,10 +3,14 @@ import "reflect-metadata";
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import routes from './routes';
-import '../database';
+import '../typeorm';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppErrors';
 import cors from 'cors';
+
+import '@shared/infra/typeorm';
+
+import '@shared/container'; // injection module
 
 const app = express();
 app.use(cors());
@@ -29,7 +33,7 @@ app.use((err:Error,request:Request,response:Response,_next:NextFunction)=>{
         });
     }
 
-    console.log(err);
+    //console.log(err);
 
     return response.status(500).json({
         status:'error',

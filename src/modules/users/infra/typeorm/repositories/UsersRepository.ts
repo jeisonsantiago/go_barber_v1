@@ -37,6 +37,11 @@ class UsersRepository implements
 
     public async create({name, email, password}:ICreateUserDTO):Promise<User>{
       const user = this.ormRepository.create({name,email,password});
+      this.save(user);
+      return user;
+    }
+
+    public async save(user:User):Promise<User>{
       await this.ormRepository.save(user);
       return user;
     }
