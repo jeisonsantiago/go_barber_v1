@@ -26,3 +26,4 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IHashProvider>(
   'HashProvider', BCryptHashProvider
 );
+

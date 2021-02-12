@@ -30,7 +30,6 @@ describe('UpdateUserAvatar', () => {
       name: 'Jeison',
       email: 'jeison.santiago@gmail.com',
       password: 'casadocaraleo'
-
     });
 
     const imageURL = 'buceta.jpeg';
