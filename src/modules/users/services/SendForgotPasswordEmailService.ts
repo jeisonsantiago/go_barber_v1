@@ -1,3 +1,5 @@
+import path from 'path';
+
 import User from '@modules/users/infra/typeorm/entities/User';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
@@ -9,6 +11,8 @@ import { injectable, inject } from 'tsyringe';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
+
+import ISendMailDTO from '@shared/container/providers/MailProvider/dtos/ISendMailDTO';
 
 // services awayls have only one method, and are
 // responsible for only one thing (unica responsabilidade)
@@ -43,7 +47,7 @@ class SendForgotPasswordEmailService {
     private userTokensRepository: IUserTokensRepository,
   ) { }
 
-  public async execute({email}: IRequest): Promise<void> {
+  public async execute({ email }: IRequest): Promise<void> {
 
     const user = await this.usersRepository.findByEmail(email);
 
@@ -51,9 +55,27 @@ class SendForgotPasswordEmailService {
       throw new AppError('Email not registred.');
     }
 
-    this.userTokensRepository.generate(user.id);
+    const {token} = await this.userTokensRepository.generate(user.id);
 
-    this.mailProvider.sendMail(email,'Recover Password');
+    const forgotPasswordTemplate = path.resolve(__dirname,'..','views','forgot_password.hbs');
+
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: "[GoBarber] Recuperacao de Senha",
+      templateData:{
+        file: forgotPasswordTemplate,
+        variables:{
+          name:user.name,
+          //token:token,
+          link: `http://localhost:3000/reset_password?token=${token}`
+        },
+      }
+    });
+
+
   }
 }
 

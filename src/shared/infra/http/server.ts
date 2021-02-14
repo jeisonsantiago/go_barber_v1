@@ -19,7 +19,7 @@ app.use(cors());
 // })); // cors lib blocks other sites access to this API
 
 app.use(express.json());
-app.use('/files',express.static(uploadConfig.directory));
+app.use('/files',express.static(uploadConfig.uploadsFolder));
 
 
 app.use(routes);

@@ -6,7 +6,7 @@ import {Entity,Column,PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn
  * Many to Many
  */
 
-@Entity('user_token') // table name
+@Entity('user_tokens') // table name
 class UserToken{
 
     @PrimaryGeneratedColumn('uuid')

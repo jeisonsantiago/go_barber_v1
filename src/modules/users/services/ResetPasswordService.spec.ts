@@ -104,8 +104,8 @@ describe('SendForgotPasswordEmail', () => {
 
       // once the Date is call, it will run the mockImplementation
       jest.spyOn(Date,'now').mockImplementationOnce(()=>{
-        const customDate = new Date();
-        return customDate.setHours(customDate.getHours()+3);
+        const customDate = new Date(new Date().toUTCString());
+        return customDate.setHours(customDate.getHours()+6);
       });
 
       await expect(resetPasswordService.execute({

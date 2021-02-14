@@ -15,6 +15,7 @@ First Project with Node.js/typescript from GoStack bootcamp (RocketSeat)
 - Envio de emails deve acontecer em background;
 
 **RN(regras de negocio)**
+
 - O link de recuperacao de senha deve expirar em 2h
 - Usuario precisa confirmar senha 2x pra confirmar alteracao
 
