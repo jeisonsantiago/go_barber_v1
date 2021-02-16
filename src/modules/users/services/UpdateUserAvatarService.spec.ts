@@ -7,22 +7,26 @@ import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHa
 import FakeStorageProvider from '@shared/container/providers/StorageProviders/fakes/FakeStorageProvider';
 import AppError from '@shared/errors/AppErrors';
 
+let fakeUsersRepository:FakeUsersRepository;
+let fakeHashProvider:FakeHashProvider;
+let createUser:CreateUserService;
+let fakeStorageProvider:FakeStorageProvider;
+let updateAvatarService:UpdateUserAvatarService;
+
 describe('UpdateUserAvatar', () => {
 
-  it('Should be able to update avatar file', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
-
-    const fakeStorageProvider = new FakeStorageProvider();
-
-    const updateAvatarService = new UpdateUserAvatarService(
+  beforeEach(()=>{
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+    fakeStorageProvider = new FakeStorageProvider();
+    updateAvatarService = new UpdateUserAvatarService(
       fakeUsersRepository,
       fakeStorageProvider,
     );
+  })
 
+  it('Should be able to update avatar file', async () => {
     //check if a function was called with a specific parameter
     const deleteFile = jest.spyOn(fakeStorageProvider,'deleteFile');
 
@@ -51,18 +55,6 @@ describe('UpdateUserAvatar', () => {
 
 
   it('Should not be able to update avatar file if not authenticated', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
-
-    const fakeStorageProvider = new FakeStorageProvider();
-
-    const updateAvatarService = new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider,
-    );
 
     const user = await createUser.execute({
       name: 'Jeison',

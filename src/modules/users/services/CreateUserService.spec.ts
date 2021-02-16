@@ -5,13 +5,21 @@ import FakeUsersRepository from '@modules/users/infra/typeorm/repositories/fakes
 import AppError from '@shared/errors/AppErrors';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUserService;
+
 describe('CreateUser', () => {
+
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+  })
+
   it('Should be able to create a new user', () => {
     async () => {
-      const fakeUsersRepository = new FakeUsersRepository();
-      const fakeHashProvider = new FakeHashProvider();
 
-      const createUser = new CreateUserService(fakeUsersRepository,fakeHashProvider);
       const user = await createUser.execute({
         name: 'Jeison',
         email: 'jeison.santiago@gmail.com',
@@ -24,10 +32,6 @@ describe('CreateUser', () => {
 
   it('Should not be able to create a new user with the same email',
     async () => {
-      const fakeUsersRepository = new FakeUsersRepository();
-      const fakeHashProvider = new FakeHashProvider();
-
-      const createUser = new CreateUserService(fakeUsersRepository,fakeHashProvider);
 
       const sameEmail = 'jeison.santiago@gmail.com';
 
