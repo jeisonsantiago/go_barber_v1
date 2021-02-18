@@ -97,7 +97,7 @@ describe('UpdateProfile', () => {
 
   });
 
-  it('Should able to change email', async () => {
+  it('Should able to update email', async () => {
     const user = await createUser.execute({
       name: 'Jeison',
       email: 'jeison.santiago@gmail.com',
@@ -132,7 +132,7 @@ describe('UpdateProfile', () => {
     const newPassowrd = 'casadocaraleo';
 
     if (user) {
-      expect(
+      await expect(
       updateProfileService.execute({
         user_id: user.id,
         name: user.name,
@@ -150,7 +150,7 @@ describe('UpdateProfile', () => {
     // }
   });
 
-  it('Should be able to change password', async () => {
+  it('Should be able to update password', async () => {
 
     const user = await createUser.execute({
       name: 'Jeison',

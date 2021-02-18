@@ -3,6 +3,7 @@ import { isEqual } from 'date-fns';
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO'
 
 // SOLID
 
@@ -13,6 +14,16 @@ class FakeUsersRepository implements
   IUsersRepository {
 
   private users: User[] = [];
+
+  public async findAllProviders({except_user_id}:IFindAllProvidersDTO):Promise<User[]>{
+    let providers = this.users;
+
+    if(except_user_id){
+      providers = this.users.filter((user)=>{user.id !== except_user_id});
+    }
+
+    return providers;
+  }
 
   // return of a async functions will awayls be a Promise
   public async findByID(id: string): Promise<User | undefined> {

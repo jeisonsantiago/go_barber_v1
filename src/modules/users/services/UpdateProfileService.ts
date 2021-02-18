@@ -40,7 +40,7 @@ class UpdateProfileService {
     // user email should be unique
     if(user.email !== email){
       const userNewEmail = await this.usersRepository.findByEmail(email);
-      if(userNewEmail){
+      if(userNewEmail && userNewEmail.id !== user_id){
         throw new AppError('Email already registrered');
       }
 
