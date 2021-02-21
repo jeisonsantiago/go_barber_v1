@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import {addMinutes,subMinutes} from 'date-fns';
 
 import CreateAppointmentService from './CreateAppointmentService';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
@@ -20,8 +21,9 @@ describe('CreateAppointment', () => {
     async () => {
 
       const appointment = await createAppointment.execute({
-        date: new Date(),
-        provider_id: '1234'
+        date: addMinutes(new Date(),1),
+        provider_id: '1234',
+        user_id: 'joao',
       });
 
       expect(appointment).toHaveProperty('id');
@@ -32,17 +34,31 @@ describe('CreateAppointment', () => {
   it('Should not be able to create two appointments at the same date/time',
     async () => {
 
-      const dateSame = new Date(2020, 4, 10, 11);
+      const dateSame = new Date(2021, 4, 10, 11);
 
       const appointment1 = await createAppointment.execute({
         date: dateSame,
-        provider_id: '1234'
+        provider_id: '1234',
+        user_id: 'joao',
       });
 
       expect(
         createAppointment.execute({
           date: dateSame,
-          provider_id: '1234'
+          provider_id: '1234',
+          user_id: 'joao',
         })).rejects.toBeInstanceOf(AppError);
+    });
+
+  it('Should not be able to create a new appointment on a passed date',
+    async () => {
+
+      await expect(
+        createAppointment.execute({
+          date: subMinutes(new Date(),1),
+          provider_id: '1234',
+          user_id: 'joao',
+        })
+      ).rejects.toBeInstanceOf(AppError);
     });
 });

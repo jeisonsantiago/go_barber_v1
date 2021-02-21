@@ -10,14 +10,16 @@ const appointmentsController = new AppointmentsController();
 
 appointmentsRouter.use(ensureAuthenticated);
 
-appointmentsRouter.get('/', async (request, response) => {
+// appointmentsRouter.get('/', async (request, response) => {
 
-    //console.log(request.user);
+//     //console.log(request.user);
 
-    //const appointmentsRepository = new AppointmentsRepository();
-    //const appointments = await appointmentsRepository.();
-    return response.json({caraleo:'caraleo'});
-});
+
+//     const appointments = await appointmentsRepository.();
+//     // return response.json({caraleo:'caraleo'});
+// });
+
+appointmentsRouter.get('/',appointmentsController.show);
 
 appointmentsRouter.post('/', appointmentsController.create);
 

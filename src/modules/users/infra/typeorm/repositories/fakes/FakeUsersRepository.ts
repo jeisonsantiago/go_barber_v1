@@ -15,12 +15,14 @@ class FakeUsersRepository implements
 
   private users: User[] = [];
 
-  public async findAllProviders({except_user_id}:IFindAllProvidersDTO):Promise<User[]>{
+  public async findAllProviders({ except_user_id }: IFindAllProvidersDTO): Promise<User[]> {
+
     let providers = this.users;
 
-    if(except_user_id){
-      providers = this.users.filter((user)=>{user.id !== except_user_id});
+    if (except_user_id) {
+      providers = this.users.filter(user => user.id !== except_user_id);
     }
+
 
     return providers;
   }
@@ -43,7 +45,7 @@ class FakeUsersRepository implements
     const user = new User();
 
     // same as below
-    Object.assign(user, {id:uuid()},userData);
+    Object.assign(user, { id: uuid() }, userData);
 
     this.users.push(user);
 

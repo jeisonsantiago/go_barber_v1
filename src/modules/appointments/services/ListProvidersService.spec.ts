@@ -48,28 +48,16 @@ describe('ListProviders', () => {
       password: 'casadocaraleo'
     });
 
-
+    let providers;
     if(logUser){
-      const list = await listProfileService.execute({user_id:logUser.id});
-
-      console.log("list",list);
+      providers = await listProfileService.execute({user_id:logUser.id});
     }
 
-    // if(user){
-      //expect(await showProfileService.execute({user_id:user.id})).toBeInstanceOf(User);
-    // }
+    expect(providers).not.toContain(logUser);
+    // or
+    expect(providers).toEqual([user1,user2,user3]);
 
   });
-
-  // it('Should not be able to show unregistred users ', async () => {
-
-  //   await expect( showProfileService.execute({
-  //     user_id:'casa',
-  //   }
-  //   )).rejects.toBeInstanceOf(AppError);
-
-  // });
-
 });
 
 
