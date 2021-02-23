@@ -1,5 +1,5 @@
-import {createConnection} from 'typeorm';
+import {createConnections } from 'typeorm';
 
-// search the file ormconfig.json and 
+// search the file ormconfig.json and
 // make a connection with the file data
-createConnection();
+createConnections();

@@ -6,13 +6,12 @@ import Appointment from '../../typeorm/entities/Appointment';
 
 export default class AppointmentsController{
 
-  public async show(request:Request, response:Response):Promise<Response>{
+  public async index(request:Request, response:Response):Promise<Response>{
 
     const appointments:Appointment[] = [];
 
     return response.json({appointments:appointments});
   }
-
 
   public async create(request:Request, response:Response):Promise<Response>{
     try {

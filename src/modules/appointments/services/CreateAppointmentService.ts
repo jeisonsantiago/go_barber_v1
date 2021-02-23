@@ -1,5 +1,5 @@
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import { isEqual, startOfHour, isBefore } from 'date-fns';
+import { isEqual, startOfHour, isBefore, getHours } from 'date-fns';
 import AppError from '@shared/errors/AppErrors';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -38,10 +38,20 @@ class CreateAppointmentService {
     const currentDate = new Date(Date.now());
     const appointmentRequestedDate = (date);
 
+    // check user ID (provider and user can't be the same)
+    if(provider_id === user_id){
+      throw new AppError(`Can't make an appointment with yourself.`);
+    }
 
-
+    // check date, appointment shouldn't be in the past.
     if(isBefore(appointmentRequestedDate, currentDate)){
       throw new AppError('Appointment Date/Time not valid.');
+    }
+
+    //appointments should be scheduled between 8am to 17pm
+    const hour = getHours(date);
+    if(hour < 8 || hour > 17){
+      throw new AppError('Appointments should be scheduled between 8am to 17pm.');
     }
 
 

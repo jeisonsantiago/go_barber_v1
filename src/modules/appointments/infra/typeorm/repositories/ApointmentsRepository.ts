@@ -22,16 +22,18 @@ class AppointmentsRepository implements
   public async findDayAvailabilityFromProvider({ provider_id, year, month, day }: IFindDayAvailabilityFromProviderDTO): Promise<Appointment[]> {
     // TODO: fix this, should work with day only
     const parsedMonth = String(month).padStart(2, '0');
-    const parsedHour = String(day).padStart(2, '0');
+    const parseDay = String(day).padStart(2, '0');
 
     const findAppointments = await this.ormRepository.find({
       where: {
-        provider: provider_id,
+        user_id: provider_id,
         date: Raw(dateFieldName =>
-          `to_char(${dateFieldName},'MM-YYY-DD') = '${parsedMonth}-${year}-${day}'`
+          `to_char(${dateFieldName},'YYYY-MM-DD') = '${year}-${parsedMonth}-${parseDay}'`
         ),
       },
     });
+
+    console.log(provider_id);
 
     return findAppointments;
   }
@@ -43,9 +45,9 @@ class AppointmentsRepository implements
 
     const findAppointments = await this.ormRepository.find({
       where: {
-        provider: provider_id,
+        provider_id: provider_id,
         date: Raw(dateFieldName =>
-          `to_char(${dateFieldName},'MM-YYY') = '${parsedMonth}-${year}'`
+          `to_char(${dateFieldName},'YYYY-MM') = '${year}-${parsedMonth}'`
         ),
       },
     });
@@ -64,7 +66,11 @@ class AppointmentsRepository implements
   }
 
   public async create({ provider_id, user_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
-    const appointment = this.ormRepository.create({ provider_id, user_id, date });
+    const appointment = this.ormRepository.create({
+      provider_id,
+      user_id,
+      date,
+    });
     await this.ormRepository.save(appointment);
     return appointment;
   }
