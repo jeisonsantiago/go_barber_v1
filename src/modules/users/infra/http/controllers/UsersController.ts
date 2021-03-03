@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 import CreateUserService from '@modules/users/services/CreateUserService';
 
 // index(list), show(list one), create, update, delete
@@ -18,21 +19,11 @@ export default class UsersController {
         password,
       });
 
-      // so we show everything but password
-      const userWithoutPassword = {
-        id: user?.id,
-        name: user?.name,
-        email: user?.email,
-        created_at: user?.created_at,
-        updated_at: user?.updated_at,
-      };
-
-      return response.json({ user: userWithoutPassword });
+      return response.json(classToClass(user));
     } catch (error) {
       return response
         .status(400)
         .json({ error: error.message });
     }
   }
-
 }

@@ -50,8 +50,9 @@ class UpdateUserAvatarService {
 
     // change contents directly in the instance
     // then you can save to DB right after:
-    const fileName = await this.storageProvider.saveFile(user.image_avatar);
+    const fileName = await this.storageProvider.saveFile(avatarFilename);
     user.image_avatar = avatarFilename;
+    this.usersRepository.save(user);
 
     return user;
   }

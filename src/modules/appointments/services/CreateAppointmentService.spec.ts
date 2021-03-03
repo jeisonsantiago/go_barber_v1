@@ -4,19 +4,22 @@ import { addMinutes, subMinutes } from 'date-fns';
 import CreateAppointmentService from './CreateAppointmentService';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import AppError from '@shared/errors/AppErrors';
+import FakeNotificationsRepository from '@modules/notifications/infra/typeorm/repositories/fake/FakeNotificationsRepository';
 
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let createAppointment: CreateAppointmentService;
-
+let fakeNotificationsRepository: FakeNotificationsRepository;
 
 const dateToWork = new Date(2021,4,10,8);
 
 describe('CreateAppointment', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
     createAppointment = new CreateAppointmentService(
-      fakeAppointmentsRepository
+      fakeAppointmentsRepository,
+      fakeNotificationsRepository,
     );
   });
 

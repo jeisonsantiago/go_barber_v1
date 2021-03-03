@@ -18,7 +18,8 @@ import BCryptHashProvider from '@modules/users/providers/HashProvider/implementa
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UsersTokensRepository';
 
-
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 
 
 container.registerSingleton<IAppointmentsRepository>(
@@ -36,3 +37,8 @@ container.registerSingleton<IHashProvider>(
 container.registerSingleton<IUserTokensRepository>(
   'UserTokensRepository', UserTokensRepository
 );
+
+container.registerSingleton<INotificationsRepository>(
+  'NotificationsRepository', NotificationsRepository
+);
+
