@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import '@modules/users/providers/';
 import './providers';
 
+import './providers/CacheProvider';
 
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/ApointmentsRepository';

@@ -29,9 +29,6 @@ export default class ProvidersController {
         });
       }
 
-
-      console.log(filterProvider);
-
       return response.json({ providers: filterProvider });
     } catch (error) {
       return response

@@ -1,12 +1,12 @@
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppErrors';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICashProvider';
 
-import { injectable,inject } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
-  user_id:string;
+  user_id: string;
 }
 
 @injectable()
@@ -15,17 +15,25 @@ class ListProfileService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-    ) { }
 
-  public async execute(  {user_id} : IRequest): Promise<User[] | undefined> {
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
+  ) { }
 
-    const user = await this.usersRepository.findAllProviders(
-      {
-        except_user_id:user_id,
-      }
-    );
+  public async execute({ user_id }: IRequest): Promise<User[]> {
 
-    return user;
+    let users = await this.cacheProvider.recover<User[]>(`providers-list:${user_id}`);
+
+    if (!users) {
+      users = await this.usersRepository.findAllProviders(
+        {
+          except_user_id: user_id,
+        });
+
+      await this.cacheProvider.save(`providers-list:${user_id}`, users);
+    }
+
+    return users;
   }
 }
 

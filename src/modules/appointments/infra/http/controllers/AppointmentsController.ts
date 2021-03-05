@@ -22,14 +22,14 @@ export default class AppointmentsController{
       const { provider_id, date } = request.body;
 
       // parseISO = parse date to 'Date' (javascript) format.
-      const parsedDate = parseISO(date); // transform data
+      // const parsedDate = parseISO(date); // transform data, because joy already does that
 
       const createAppointment = container.resolve(CreateAppointmentService);
 
       const appointment = await createAppointment.execute({
         provider_id: provider_id,
         user_id: user_id,
-        date: parsedDate,
+        date: date,
       });
 
       return response.json({ appointment: appointment });
