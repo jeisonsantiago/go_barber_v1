@@ -6,19 +6,22 @@ import FakeUsersRepository from '@modules/users/infra/typeorm/repositories/fakes
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider'
 import FakeStorageProvider from '@shared/container/providers/StorageProviders/fakes/FakeStorageProvider';
 import AppError from '@shared/errors/AppErrors';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
-let fakeUsersRepository:FakeUsersRepository;
-let fakeHashProvider:FakeHashProvider;
-let createUser:CreateUserService;
-let fakeStorageProvider:FakeStorageProvider;
-let updateAvatarService:UpdateUserAvatarService;
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUserService;
+let fakeStorageProvider: FakeStorageProvider;
+let updateAvatarService: UpdateUserAvatarService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('UpdateUserAvatar', () => {
 
-  beforeEach(()=>{
+  beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+    fakeCacheProvider = new FakeCacheProvider();
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider, fakeCacheProvider);
     fakeStorageProvider = new FakeStorageProvider();
     updateAvatarService = new UpdateUserAvatarService(
       fakeUsersRepository,
@@ -28,7 +31,7 @@ describe('UpdateUserAvatar', () => {
 
   it('Should be able to update avatar file', async () => {
     //check if a function was called with a specific parameter
-    const deleteFile = jest.spyOn(fakeStorageProvider,'deleteFile');
+    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 
     const user = await createUser.execute({
       name: 'Jeison',

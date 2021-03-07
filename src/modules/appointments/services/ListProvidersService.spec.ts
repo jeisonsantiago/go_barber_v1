@@ -3,22 +3,23 @@ import 'reflect-metadata';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import FakeUsersRepository from '@modules/users/infra/typeorm/repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider'
-import AppError from '@shared/errors/AppErrors';
-import User from '@modules/users/infra/typeorm/entities/User';
 import ListProfileService from './ListProvidersService';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
-let listProfileService:ListProfileService;
+let listProfileService: ListProfileService;
 let createUser: CreateUserService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('ListProviders', () => {
 
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
-    listProfileService = new ListProfileService(fakeUsersRepository);
+    fakeCacheProvider = new FakeCacheProvider();
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider, fakeCacheProvider);
+    listProfileService = new ListProfileService(fakeUsersRepository, fakeCacheProvider);
   })
 
   it('Should be able to list providers', async () => {
@@ -49,13 +50,13 @@ describe('ListProviders', () => {
     });
 
     let providers;
-    if(logUser){
-      providers = await listProfileService.execute({user_id:logUser.id});
+    if (logUser) {
+      providers = await listProfileService.execute({ user_id: logUser.id });
     }
 
     expect(providers).not.toContain(logUser);
     // or
-    expect(providers).toEqual([user1,user2,user3]);
+    expect(providers).toEqual([user1, user2, user3]);
 
   });
 });

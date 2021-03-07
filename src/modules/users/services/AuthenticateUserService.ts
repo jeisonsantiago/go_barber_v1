@@ -1,12 +1,12 @@
 import User from '../infra/typeorm/entities/User';
 import { compare } from 'bcryptjs';
-import { sign, verify } from 'jsonwebtoken';
+import { sign, verify, Secret } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppErrors';
 
 import IUsersRepository from '../repositories/IUsersRepository';
 
-import {inject, injectable} from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
@@ -27,8 +27,8 @@ class AuthenticateUserService {
     private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
-    private hashProvider:IHashProvider,
-    ) { }
+    private hashProvider: IHashProvider,
+  ) { }
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
 
@@ -44,7 +44,9 @@ class AuthenticateUserService {
       throw new AppError('Incorrect email/password combination ps', 401);
     }
 
+
     const { secret, expiresIn } = authConfig.jwt;
+    console.log('ex:', expiresIn);
 
     // user experience WEB desktop
     const token = sign({}, secret, {

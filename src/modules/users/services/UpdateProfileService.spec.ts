@@ -7,10 +7,11 @@ import AppError from '@shared/errors/AppErrors';
 import UpdateProfileService from './UpdateProfileService';
 
 import BCryptHashProvider from '../providers/HashProvider/implementations/BCryptHashProvider';
-import { is } from 'date-fns/locale';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 
 let createUser: CreateUserService;
 let updateProfileService: UpdateProfileService;
@@ -23,7 +24,9 @@ describe('UpdateProfile', () => {
     // fakeHashProvider = new FakeHashProvider();
     fakeHashProvider = new BCryptHashProvider();
 
-    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+    fakeCacheProvider = new FakeCacheProvider();
+
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider, fakeCacheProvider);
     updateProfileService = new UpdateProfileService(
       fakeUsersRepository,
       fakeHashProvider,
@@ -133,13 +136,13 @@ describe('UpdateProfile', () => {
 
     if (user) {
       await expect(
-      updateProfileService.execute({
-        user_id: user.id,
-        name: user.name,
-        email: user.email,
-        old_password: user.password,
-        password: newPassowrd,
-      })).rejects.toBeInstanceOf(AppError);
+        updateProfileService.execute({
+          user_id: user.id,
+          name: user.name,
+          email: user.email,
+          old_password: user.password,
+          password: newPassowrd,
+        })).rejects.toBeInstanceOf(AppError);
     }
 
     // const updatedUser = await fakeUsersRepository.findByEmail('jeison.santiago@gmail.com');
@@ -169,8 +172,8 @@ describe('UpdateProfile', () => {
         password: newPassowrd,
       });
 
-      if(updateUser){
-        expect(await fakeHashProvider.compareHash(newPassowrd,updateUser.password)).toBeTruthy();
+      if (updateUser) {
+        expect(await fakeHashProvider.compareHash(newPassowrd, updateUser.password)).toBeTruthy();
       }
     }
   });

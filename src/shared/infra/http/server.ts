@@ -9,10 +9,12 @@ import AppError from '@shared/errors/AppErrors';
 import cors from 'cors';
 import { errors } from 'celebrate';
 import '@shared/infra/typeorm';
-
 import '@shared/container'; // injection module
+import rateLimiter from 'shared/infra/http/middlewares/rateLimiter';
 
 const app = express();
+
+app.use(rateLimiter);
 app.use(cors());
 // app.use(cors({
 //   origin: 'http//localhost/3000'

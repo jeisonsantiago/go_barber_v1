@@ -3,7 +3,7 @@ import { isEqual, getMonth, getDate, getYear } from 'date-fns';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import ICreateNotificationDTO from '@modules/notifications/dtos/ICreateNotificationDTO';
 import Notification from '@modules/notifications/infra/typeorm/schemas/Notification';
-import { ObjectID } from 'typeorm';
+
 // SOLID
 
 // Liskov Subistitution Principle:
@@ -24,7 +24,7 @@ class FakeNotificationsRepository implements
     notification.created_at = new Date();
     notification.updated_at = new Date();
 
-    notification.id = new ObjectID();
+    // notification.id = uuid();
     notification.read = false;
 
     this.notifications.push(notification);
